@@ -1,0 +1,31 @@
+test_that("output arma", {
+  set.seed(8)
+  y1 = mxarma.sim(1000, alpha = 0.5, phi = c(0.6,0.2), theta = c(0.7,0.1))
+  y2 = mxarma.sim(1000, alpha = 0.5, phi = c(0.6), theta = c(0.7,0.1))
+  y3 = mxarma.sim(1000, alpha = 0.5, phi = c(0.6,0.2), theta = c(0.7))
+  y4 = mxarma.sim(1000, alpha = 0.5, phi = c(0.6), theta = c(0.7))
+  expect_snapshot(mxarma.fit(y1, ar = c(1,2), ma = c(1,2))$model)
+  expect_snapshot(mxarma.fit(y2, ar = c(1), ma = c(1,2))$model)
+  expect_snapshot(mxarma.fit(y3, ar = c(1,2), ma = c(1))$model)
+  expect_snapshot(mxarma.fit(y4, ar = c(1), ma = c(1))$model)
+})
+
+test_that("output ar", {
+  set.seed(8)
+  y1 = mxarma.sim(1000, alpha = 0.5, phi = c(0.6,0.2))
+  y2 = mxarma.sim(1000, alpha = 0.5, phi = c(0.6))
+  y3 = mxarma.sim(1000, alpha = 0.5, phi = c(0.6, 0.2, 0.1))
+  expect_snapshot(mxarma.fit(y1, ar = c(1,2))$model)
+  expect_snapshot(mxarma.fit(y2, ar = c(1))$model)
+  expect_snapshot(mxarma.fit(y3, ar = c(1,2,3))$model)
+})
+
+test_that("output ma", {
+  set.seed(8)
+  y1 = mxarma.sim(1000, alpha = 0.5, theta = c(0.6,0.2))
+  y2 = mxarma.sim(1000, alpha = 0.5, theta = c(0.6))
+  y3 = mxarma.sim(1000, alpha = 0.5, theta = c(0.6, 0.2, 0.1))
+  expect_snapshot(mxarma.fit(y1, ar = c(1,2))$model)
+  expect_snapshot(mxarma.fit(y2, ar = c(1))$model)
+  expect_snapshot(mxarma.fit(y3, ar = c(1,2,3))$model)
+})
