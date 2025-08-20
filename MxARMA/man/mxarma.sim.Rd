@@ -2,29 +2,54 @@
 % Please edit documentation in R/simumarma.R
 \name{mxarma.sim}
 \alias{mxarma.sim}
-\title{Simulation of the Maxwell Distribution}
+\title{Simulation from the Maxwell ARMA (MxARMA) Model}
 \usage{
 mxarma.sim(n, alpha = 0, phi = NULL, theta = NULL)
 }
 \arguments{
-\item{n}{Number of random values to generate.}
+\item{n}{Integer. Number of observations to simulate.}
 
-\item{alpha}{A value for the intercept parameter.}
+\item{alpha}{Numeric. Intercept of the linear predictor.}
 
-\item{phi}{A value or a vector of values for the regressor parameter phi.}
+\item{phi}{Numeric vector. Autoregressive coefficients. If \code{NULL} (default),
+no AR structure is included.}
 
-\item{theta}{A value or a vector of values for the moving average parameter theta.}
+\item{theta}{Numeric vector. Moving average coefficients. If \code{NULL} (default),
+  no MA structure is included.
+
+ @details
+The MxARMA(p,q) model assumes that the conditional mean of the process is linked
+to a linear predictor via a logarithmic link function. The innovations are assumed
+to follow a Maxwell distribution, generated internally with \code{rmax()}.
+
+When only \code{phi} is supplied, an MxAR(p) model is simulated. When only
+\code{theta} is supplied, an MxMA(q) model is generated. When both are supplied,
+an MxARMA(p,q) model is simulated.}
+}
+\value{
+A numeric vector of length \code{n} containing the simulated time series.
 }
 \description{
-This function generates random values from the MxARMA model.
-}
-\details{
-The function simulates values from the MxARMA model, which includes
- the possibility of generating values for an autoregressive (AR), moving average (MA),
-  or combined autoregressive moving average (ARMA) model.
+Generates a univariate time series from an ARMA-type model whose innovations follow
+the Maxwell distribution. The user can simulate pure autoregressive (AR),
+pure moving average (MA), or mixed ARMA dynamics depending on which parameters
+are provided.
 }
 \examples{
- y <- mxarma.sim(n = 1000, alpha = 0.6, phi = c(0.6, 0.1), theta = 0.3)
- y
+# AR(2) Example
+set.seed(123)
+ts_ar <- mxarma.sim(n = 500, alpha = 0.6, phi = c(0.7, -0.2))
 
+# MA(1) Example
+ts_ma <- mxarma.sim(n = 500, alpha = 0.6, theta = 0.4)
+
+# ARMA(2,1) Example
+ts_arma <- mxarma.sim(n = 500, alpha = 0.6, phi = c(0.5, 0.2), theta = 0.3)
+
+}
+\seealso{
+\code{\link{rmax}}
+}
+\author{
+Arthur Hintz
 }

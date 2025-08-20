@@ -12,7 +12,7 @@
 #' rmax(n = 5, mu = 2)
 #'
 #' @export
-rmax <- function(n, mu) {
+rmax <- function(n = 1, mu) {
   if (!is.numeric(n) || length(n) != 1 || n <= 0 || n != as.integer(n))
     stop("'n' must be a positive integer.")
   if (!is.numeric(mu) || length(mu) != 1 || mu <= 0)

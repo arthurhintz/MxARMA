@@ -4,7 +4,7 @@
 \alias{rmax}
 \title{Random Generation from the Parametrized Maxwell Distribution}
 \usage{
-rmax(n, mu)
+rmax(n = 1, mu)
 }
 \arguments{
 \item{n}{Number of observations to generate. Must be a positive integer.}
