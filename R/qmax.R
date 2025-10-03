@@ -19,12 +19,12 @@ qmax <- function(u, mu) {
   if (!is.numeric(mu) || length(mu) != 1 || mu <= 0)
     stop("'mu' must be a single positive number.")
 
-  ext <- uniroot(function(x) MxARMA::pmax(x, mu) - u,
-                 interval = c(0, mu * 20), tol = 1e-30,
-                 extendInt = "yes")$root
-  return(abs(ext))
-
-
-
+  res <- sapply(u, function(uu) {
+    uniroot(function(x) MxARMA::pmax(x, mu) - uu,
+            interval = c(0, mu * 20), tol = 1e-12,
+            extendInt = "yes")$root
+  })
+  return(res)
 }
+
 
