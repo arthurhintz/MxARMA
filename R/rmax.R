@@ -11,6 +11,8 @@
 #' @examples
 #' rmax(n = 5, mu = 2)
 #'
+#' @importFrom stats runif
+#'
 #' @export
 rmax <- function(n = 1, mu) {
   if (!is.numeric(n) || length(n) != 1 || n <= 0 || n != as.integer(n))

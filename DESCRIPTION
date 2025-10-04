@@ -1,11 +1,15 @@
 Package: MxARMA
 Type: Package
-Title: The Maxwell Distribuition
-Version: 0.1.0
+Title: Maxwell Distribution Modelling of Time Series
+Version: 1.0.0
 Author: c(person("Hintz Arthur H.", role = "aut", "cre"),
-          person("Bayer Fábio M.", role = "aut"))
+          person("Bayer Fábio M.", role = "aut"),
+          person("Ramirez, Fernando P.", role = "aut"))
 Maintainer: Arthur Hintz <arthur.hintz@acad.ufsm.br>
-Description: The 'MxARMA' package provides computational tools for easily simulating and fitting the Maxwell Distribution.
+Description: Implements autoregressive moving average (ARMA) models for 
+    positive continuous time series based on the Maxwell distribution. 
+    Includes density, distribution, quantile, random generation, and 
+    conditional maximum likelihood estimation functions.
 License: GPL(>= 2)
 Encoding: UTF-8
 LazyData: true
@@ -14,4 +18,4 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5)

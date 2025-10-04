@@ -12,6 +12,8 @@
 #' qmax(u = 0.5, mu = 2)
 #' qmax(u = c(0.25, 0.5, 0.75), mu = 2)
 #'
+#'@importFrom stats uniroot
+#'
 #' @export
 qmax <- function(u, mu) {
   if (!is.numeric(u) || any(u < 0 | u > 1))

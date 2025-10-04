@@ -26,8 +26,8 @@
 #' @export
 dmax <- function(y, mu) {
   if (!is.numeric(y)) stop("'y' must be numeric.")
-  if (!is.numeric(mu) || length(mu) != 1 || mu <= 0)
-    stop("'mu' must be a single positive number.")
+  if (!is.numeric(mu) || any(mu <= 0, na.rm = T))
+    stop("'mu' must be a positive number.")
 
   density <- ifelse(y < 0, 0,
                     (32 * y^2 / (pi^2 * mu^3)) * exp(-4 * y^2 / (pi * mu^2))

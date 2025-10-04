@@ -15,16 +15,7 @@ mxarma.sim(n, alpha = 0, phi = NULL, theta = NULL)
 no AR structure is included.}
 
 \item{theta}{Numeric vector. Moving average coefficients. If \code{NULL} (default),
-  no MA structure is included.
-
- @details
-The MxARMA(p,q) model assumes that the conditional mean of the process is linked
-to a linear predictor via a logarithmic link function. The innovations are assumed
-to follow a Maxwell distribution, generated internally with \code{rmax()}.
-
-When only \code{phi} is supplied, an MxAR(p) model is simulated. When only
-\code{theta} is supplied, an MxMA(q) model is generated. When both are supplied,
-an MxARMA(p,q) model is simulated.}
+no MA structure is included.}
 }
 \value{
 A numeric vector of length \code{n} containing the simulated time series.
@@ -34,6 +25,15 @@ Generates a univariate time series from an ARMA-type model whose innovations fol
 the Maxwell distribution. The user can simulate pure autoregressive (AR),
 pure moving average (MA), or mixed ARMA dynamics depending on which parameters
 are provided.
+}
+\details{
+The MxARMA(p,q) model assumes that the conditional mean of the process is linked
+to a linear predictor via a logarithmic link function. The innovations are assumed
+to follow a Maxwell distribution, generated internally with \code{rmax()}.
+
+When only \code{phi} is supplied, an MxAR(p) model is simulated. When only
+\code{theta} is supplied, an MxMA(q) model is generated. When both are supplied,
+an MxARMA(p,q) model is simulated.
 }
 \examples{
 # AR(2) Example

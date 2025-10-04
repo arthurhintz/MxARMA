@@ -8,9 +8,12 @@
 #'
 #'
 #' @return Um dataframe contendo os dados
-#' @export
-data <- function() {
-  data_path <- system.file("data", "wind_speed_brasilia.txt", package = "MxARMA")
-  dado <- read.table(data_path, sep = ";", header = TRUE)
-  return(dado)
-}
+#' @keywords datasets
+#' @examples
+#' data("wind_speed_brasilia")
+#' head(wind_speed_brasilia)
+#'
+#' # Se você distribuiu o .txt junto (inst/extdata), dá para ler assim:
+#' # fp <- system.file("extdata", "wind_speed_brasilia.txt", package = "MxARMA")
+#' # read.delim(fp, sep = ";")
+"wind_speed_brasilia"

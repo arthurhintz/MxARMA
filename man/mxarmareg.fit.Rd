@@ -42,12 +42,11 @@ Used for fitting the Maxwell auto-regressive moving averages model with regresso
 The function fitted values from the MxARMA model, including the possibility of fitting values for an autoregressive with exogenous variables (ARX), moving average (MAX), or combined autoregressive moving average with exogenous variables (ARMAX) model.
 }
 \examples{
-
- X = stats::runif(1004, 0, 1)
- y <- mxarmareg.sim(n = 1000, alpha = 0.6, phi = c(0.6, 0.1), theta = 0.3, beta = 0.7, X = X)
- X <- X[5:1004]
- xhat <- matrix(runif(12, 0, 1), ncol = 1)
- mxarmareg.fit(y = y, cvar = X, ar = c(1,2), ma = c(1), resid = 1, h1 = 12, X_hat = xhat)
+X = stats::runif(1004, 0, 1)
+y <- mxarmareg.sim(n = 1000, alpha = 0.6, phi = c(0.6, 0.1), theta = 0.3, beta = 0.7, X = X)
+X <- X[5:1004]
+xhat <- matrix(runif(12, 0, 1), ncol = 1)
+mxarmareg.fit(y = y, cvar = X, ar = c(1,2), ma = c(1), resid = 1, h1 = 12, X_hat = xhat)
 
 
 }

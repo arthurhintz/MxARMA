@@ -24,16 +24,23 @@
 #' curve(pmax(x, 3), from = 0, to = 10,
 #'       xlab = "y", ylab = "CDF", n = 1000)
 #'
+#'@importFrom stats pgamma
+#'
 #' @export
 pmax <- function(y, mu) {
   if (!is.numeric(y)) stop("'y' must be numeric.")
-  if (!is.numeric(mu) || length(mu) != 1 || mu <= 0)
-    stop("'mu' must be a single positive number.")
+  if (!is.numeric(mu) || any(mu <= 0, na.rm = TRUE))
+    stop("'mu' must be a positive number.")
+
+  # reciclagem manual para alinhar vetores
+  n <- max(length(y), length(mu))
+  y  <- rep(y,  length.out = n)
+  mu <- rep(mu, length.out = n)
 
   cdf <- ifelse(y < 0, 0,
-                (2/sqrt(pi)) * gamma(3/2) * pgamma((4 * y^2)/(pi * mu^2),
-                                                   3/2, lower.tail = TRUE))
+                (2/sqrt(pi)) * gamma(3/2) *
+                  pgamma((4 * y^2)/(pi * mu^2),
+                         3/2, lower.tail = TRUE))
 
   return(cdf)
 }
-

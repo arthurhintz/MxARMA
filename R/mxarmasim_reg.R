@@ -45,8 +45,8 @@
 #'                     theta = 0.2, beta = 0.7, X = X)  # ARMAX
 #'
 #' @importFrom stats make.link
+#'
 #' @export
-
 mxarmareg.sim <- function(n, phi = NULL, theta = NULL, alpha = 0.0, beta = NULL, X = NULL) {
 
     if (!is.numeric(n) || n <= 0) {

@@ -21,16 +21,12 @@
 #'
 #'
 #'
-#'@examples
+#' @examples
+#' y <- MxARMA::mxarma.sim(100, alpha=0.6, phi= c(0.6,0.2), theta = -0.4)
+#' mxarma.fit(y, ar=c(1,2), ma=c(1), resid = 1, h1 = 12)
 #'
-#'y <- MxARMA::mxarma.sim(100, alpha=0.6, phi= c(0.6,0.2), theta = -0.4)
-#'mxarma.fit(y, ar=c(1,2), ma=c(1), resid = 1, h1 = 12)
 #'
-#'
-#'@importFrom stats make.link
-#'@importFrom stats optim
-#'@importFrom stats qnorm
-#'@importFrom stats pnorm
+#' @import stats
 #'
 #'@export
 mxarma.fit <- function(y, ar = NA, ma = NA, resid = 1, h1 = 0){
