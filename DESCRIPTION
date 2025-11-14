@@ -1,6 +1,6 @@
 Package: MxARMA
 Type: Package
-Title: Maxwell Distribution Modelling of Time Series
+Title: A Mean-Parameterized Maxwell Time Series Model for Positive Data
 Version: 1.0.0
 Author: c(person("Hintz Arthur H.", role = "aut", "cre"),
           person("Bayer Fábio M.", role = "aut"),

@@ -143,9 +143,6 @@ mxarma.fit <- function(y, ar = NA, ma = NA, resid = 1, h1 = 0){
   alpha <-coef[1]
   phi <- coef[2:(p1+1)]
 
-  z$alpha <- alpha
-  z$phi <- phi
-
   etahat<-rep(NA,n)
   errorhat<-rep(0,n)
 
@@ -172,17 +169,17 @@ mxarma.fit <- function(y, ar = NA, ma = NA, resid = 1, h1 = 0){
   a <- deta.dalpha[(m+1):n]
   rP <- deta.dphi[(m+1):n,]
 
-  W <- diag(((6)/(muhat^2))*(muhat^2))
-
-  Kaa <- t(a) %*% W %*% a
-  Kap <- t(a) %*% W %*% rP
+  Kaa <- t(a) %*% a
+  Kap <- t(a) %*% rP
   Kpa <- t(Kap)
-  Kpp <- t(rP) %*% W %*% rP
+  Kpp <- t(rP) %*% rP
 
   K <- rbind(
     cbind(Kaa,Kap),
     cbind(Kpa,Kpp)
   )
+
+  K <- 6 * K
 
   z$K <- K
 
@@ -195,7 +192,6 @@ mxarma.fit <- function(y, ar = NA, ma = NA, resid = 1, h1 = 0){
     ynew_prev[n+i] <- alpha + (phi%*%ynew_prev[n+i-ar])
     y_prev[n+i] <- linkinv(ynew_prev[n+i])
   }
-
 
 }
 
@@ -281,9 +277,6 @@ mxarma.fit <- function(y, ar = NA, ma = NA, resid = 1, h1 = 0){
     alpha <-coef[1]
     theta <- coef[2:(q1+1)]
 
-    z$alpha <- alpha
-    z$theta <- theta
-
     etahat<-rep(NA,n)
     errorhat<-rep(0,n)
 
@@ -312,17 +305,18 @@ mxarma.fit <- function(y, ar = NA, ma = NA, resid = 1, h1 = 0){
     a <- deta.dalpha[(m+1):n]
     rR <- deta.dtheta[(m+1):n,]
 
-    W <- diag(((6)/(muhat^2))*(muhat^2))
 
-    Kaa <- t(a) %*% W %*% a
-    Kat <- t(a) %*% W %*% rR
+    Kaa <- t(a) %*% a
+    Kat <- t(a) %*% rR
     Kta <- t(Kat)
-    Ktt <- t(rR) %*% W %*% rR
+    Ktt <- t(rR) %*% rR
 
     K <- rbind(
       cbind(Kaa,Kat),
       cbind(Kta,Ktt)
     )
+
+    K <- 6 * K
 
     z$K <- K
 
@@ -431,10 +425,6 @@ mxarma.fit <- function(y, ar = NA, ma = NA, resid = 1, h1 = 0){
     phi <- coef[2:(p1+1)]
     theta <- coef[(p1+2):(p1+q1+1)]
 
-    z$alpha <- alpha
-    z$phi <- phi
-    z$theta <- theta
-
     errorhat<-rep(0,n)
     etahat<-rep(NA,n)
 
@@ -446,7 +436,7 @@ mxarma.fit <- function(y, ar = NA, ma = NA, resid = 1, h1 = 0){
     y1 = y[(m+1):n]
 
     z$fitted <- ts(c(rep(NA,m),muhat),start=start(y),frequency=frequency(y))
-    z$etahat <- etahat
+
     z$errorhat <- errorhat
 
     R <- matrix(rep(NA,(n-m)*q1),ncol=q1)
@@ -468,23 +458,22 @@ mxarma.fit <- function(y, ar = NA, ma = NA, resid = 1, h1 = 0){
     rP <- deta.dphi[(m+1):n,]
     rR <- deta.dtheta[(m+1):n,]
 
-    W <- diag(((6)/(muhat^2))*(muhat^2))
-
-    Kaa <- t(a) %*% W %*% a
-    Kap <- t(a) %*% W %*% rP
+    Kaa <- t(a) %*% a
+    Kap <- t(a) %*% rP
     Kpa <- t(Kap)
-    Kat <- t(a) %*% W %*% rR
+    Kat <- t(a) %*% rR
     Kta <- t(Kat)
-    Kpp <- t(rP) %*% W %*% rP
-    Kpt <- t(rP) %*% W %*% rR
+    Kpp <- t(rP) %*% rP
+    Kpt <- t(rP) %*% rR
     Ktp <- t(Kpt)
-    Ktt <- t(rR) %*% W %*% rR
+    Ktt <- t(rR) %*% rR
 
     K <- rbind(
       cbind(Kaa,Kap,Kat),
       cbind(Kpa,Kpp,Kpt),
       cbind(Kta,Ktp,Ktt))
 
+    K <- 6*K
     z$K <- K
 
     #### Forecasting
@@ -499,8 +488,8 @@ mxarma.fit <- function(y, ar = NA, ma = NA, resid = 1, h1 = 0){
   }
 
   ## Forecast
+  #z$y_prev = y_prev
 
-  z$y_prev = y_prev
   z$forecast <- y_prev[(n+1):(n+h1)]
   ############### Residuos
 
@@ -531,18 +520,17 @@ mxarma.fit <- function(y, ar = NA, ma = NA, resid = 1, h1 = 0){
   stderror <- sqrt(diag(vcov))
   z$stderror <- stderror
 
-  z$zstat <- abs(z$coeff/stderror)
-  z$pvalues <- 2*(1 - stats::pnorm(z$zstat))
+  zstat <- abs(z$coeff/stderror)
+  pvalues <- 2*(1 - stats::pnorm(z$zstat))
 
   z$loglik <- opt$value*(n/(n-m))
-  z$counts <- as.numeric(opt$counts[1])
-
+  #z$counts <- as.numeric(opt$counts[1])
 
   z$aic <- -2*z$loglik+2*(p1+q1+2)
   z$bic <- -2*z$loglik+log(n)*(p1+q1+2)
 
 
-  model_presentation <- cbind(round(z$coeff,4),round(z$stderror,4),round(z$zstat,4),round(z$pvalues,4))
+  model_presentation <- cbind(round(z$coeff,4),round(stderror,4),round(zstat,4),round(pvalues,4))
   colnames(model_presentation)<-c("Estimate","Std. Error","z value","Pr(>|z|)")
 
   z$model <- model_presentation

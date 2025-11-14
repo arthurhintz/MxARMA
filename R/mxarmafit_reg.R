@@ -176,10 +176,6 @@ mxarmareg.fit <- function(y, cvar, ar = NA, ma = NA, resid = 1, h1 = 0, X_hat = 
     phi <- coef[2:(p1+1)]
     beta <- coef[(p1+2):length(coef)]
 
-    z$alpha <- alpha
-    z$phi <- phi
-    z$beta <- beta
-
     etahat<-rep(NA,n)
 
     for(i in (m+1):n){
@@ -339,10 +335,6 @@ mxarmareg.fit <- function(y, cvar, ar = NA, ma = NA, resid = 1, h1 = 0, X_hat = 
     alpha <-coef[1]
     theta <- coef[2:(q1+1)]
     beta <- coef[(q1+2):length(coef)]
-
-    z$alpha <- alpha
-    z$theta <- theta
-    z$beta <- beta
 
     errorhat <-rep(0,n)
     etahat <-rep(NA,n)
@@ -528,11 +520,6 @@ mxarmareg.fit <- function(y, cvar, ar = NA, ma = NA, resid = 1, h1 = 0, X_hat = 
     theta <- coef[(p1+2):(p1+q1+1)]
     beta <- coef[(p1+q1+2):length(coef)]
 
-    z$alpha <- alpha
-    z$phi <- phi
-    z$theta <- theta
-    z$beta <- beta
-
     errorhat <-rep(0,n)
     etahat <-rep(NA,n)
 
@@ -579,28 +566,25 @@ mxarmareg.fit <- function(y, cvar, ar = NA, ma = NA, resid = 1, h1 = 0, X_hat = 
     rR <- deta.dtheta[(m+1):n,]
     rM <- deta.dbeta[(m+1):n,]
 
-
-    W<- diag(((6)/(muhat^2))*(muhat^2))
-
-    Kaa <- t(a) %*% W %*% a
-    Kab <- t(a) %*% W %*% rM
+    Kaa <- t(a) %*% a
+    Kab <- t(a) %*% rM
     Kba <- t(Kab)
-    Kap <- t(a) %*% W %*% rP
+    Kap <- t(a) %*% rP
     Kpa <- t(Kap)
-    Kat <- t(a) %*% W %*% rR
+    Kat <- t(a) %*% rR
     Kta <- t(Kat)
 
-    Kbb <- t(rM) %*% W %*% rM
-    Kbp <- t(rM) %*% W %*% rP
+    Kbb <- t(rM) %*% rM
+    Kbp <- t(rM) %*% rP
     Kpb <- t(Kbp)
-    Kbt <- t(rM) %*% W %*% rR
+    Kbt <- t(rM) %*% rR
     Ktb <- t(Kbt)
 
-    Kpp <- t(rP) %*% W %*% rP
-    Kpt <- t(rP) %*% W %*% rR
+    Kpp <- t(rP) %*% rP
+    Kpt <- t(rP) %*% rR
     Ktp <- t(Kpt)
 
-    Ktt <- t(rR) %*% W %*% rR
+    Ktt <- t(rR) %*% rR
 
     K <- rbind(
       cbind(Kaa,Kap,Kat,Kab),
@@ -609,6 +593,7 @@ mxarmareg.fit <- function(y, cvar, ar = NA, ma = NA, resid = 1, h1 = 0, X_hat = 
       cbind(Kba,Kbp,Kbt,Kbb)
     )
 
+    K <- 6 * K
     z$K <- K
 
     fited <- ts(c(rep(NA,m),muhat),start=start(y),frequency=frequency(y))
