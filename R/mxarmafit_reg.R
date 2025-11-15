@@ -171,6 +171,7 @@ mxarmareg.fit <- function(y, cvar, ar = NA, ma = NA, resid = 1, h1 = 0, X_hat = 
     coef <- opt$par
     names(coef)<-names_par
     z$coeff <- coef
+    z$ar <- ar
 
     alpha <-coef[1]
     phi <- coef[2:(p1+1)]
@@ -331,6 +332,7 @@ mxarmareg.fit <- function(y, cvar, ar = NA, ma = NA, resid = 1, h1 = 0, X_hat = 
     coef <- opt$par
     names(coef)<-names_par
     z$coeff <- coef
+    z$ma <- ma
 
     alpha <-coef[1]
     theta <- coef[2:(q1+1)]
@@ -514,6 +516,7 @@ mxarmareg.fit <- function(y, cvar, ar = NA, ma = NA, resid = 1, h1 = 0, X_hat = 
     coef <- opt$par
     names(coef)<-names_par
     z$coeff <- coef
+    z$ar <- ar; z$ma <- ma
 
     alpha <-coef[1]
     phi <-  coef[2:(p1+1)]
@@ -658,6 +661,8 @@ z$counts <- as.numeric(opt$counts[1])
 
 z$aic <- -2*z$loglik+2*(p1+q1+2+length(beta))
 z$bic <- -2*z$loglik+log(n)*(p1+q1+2+length(beta))
+
+z$y <- y
 
 
 model_presentation <- cbind(round(z$coeff,4),round(z$stderror,4),round(z$zstat,4),round(z$pvalues,4))

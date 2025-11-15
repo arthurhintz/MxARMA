@@ -139,6 +139,7 @@ mxarma.fit <- function(y, ar = NA, ma = NA, resid = 1, h1 = 0){
   coef <- opt$par
   names(coef)<-names_par
   z$coeff <- coef
+  z$ar <- ar
 
   alpha <-coef[1]
   phi <- coef[2:(p1+1)]
@@ -273,6 +274,7 @@ mxarma.fit <- function(y, ar = NA, ma = NA, resid = 1, h1 = 0){
     coef <- opt$par
     names(coef)<-names_par
     z$coeff <- coef
+    z$ma <- ma
 
     alpha <-coef[1]
     theta <- coef[2:(q1+1)]
@@ -420,6 +422,7 @@ mxarma.fit <- function(y, ar = NA, ma = NA, resid = 1, h1 = 0){
     coef <- opt$par
     names(coef) <- names_par
     z$coeff <- coef
+    z$ar <- ar; z$ma <- ma
 
     alpha <-coef[1]
     phi <- coef[2:(p1+1)]
@@ -521,13 +524,15 @@ mxarma.fit <- function(y, ar = NA, ma = NA, resid = 1, h1 = 0){
   z$stderror <- stderror
 
   zstat <- abs(z$coeff/stderror)
-  pvalues <- 2*(1 - stats::pnorm(z$zstat))
+  pvalues <- 2*(1 - stats::pnorm(zstat))
 
   z$loglik <- opt$value*(n/(n-m))
   #z$counts <- as.numeric(opt$counts[1])
 
   z$aic <- -2*z$loglik+2*(p1+q1+2)
   z$bic <- -2*z$loglik+log(n)*(p1+q1+2)
+
+  z$y <- y
 
 
   model_presentation <- cbind(round(z$coeff,4),round(stderror,4),round(zstat,4),round(pvalues,4))
